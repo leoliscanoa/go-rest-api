@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  rest-api:
+    container_name: rest-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: postgres
+      DB_PORT: 5432
+    ports:
+      - "3000:3000"
+    networks:
+      - go-rest-api
+  postgres:
+    container_name: database
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      TZ: UTC
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-q", "-d", "postgres", "-U", "postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - database:/var/lib/postgresql/data/
+    networks:
+      - go-rest-api
+volumes:
+  database:
+    driver: local
+networks:
+  go-rest-api:
