@@ -1,4 +1,4 @@
-package handler
+package controller
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 )
 
 func Index(writer http.ResponseWriter, request *http.Request) {
-	_, err := fmt.Fprintf(writer, "Welcome to my API!")
+	_, err := fmt.Fprintf(writer, "Welcome to Usersß API!")
 	if err != nil {
 		panic(err)
 	}
