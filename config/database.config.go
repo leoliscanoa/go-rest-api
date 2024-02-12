@@ -1,4 +1,4 @@
-package database
+package config
 
 import (
 	"fmt"
@@ -11,7 +11,6 @@ import (
 )
 
 func InitDatabase() *gorm.DB {
-	var err error
 	jdbcUrl := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s",
 		os.Getenv("DB_HOST"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"), os.Getenv("DB_PORT"))
 	db, err := gorm.Open(postgres.Open(jdbcUrl), &gorm.Config{
@@ -23,7 +22,7 @@ func InitDatabase() *gorm.DB {
 	log.Println("Database connection successfully")
 	errMigrate := db.AutoMigrate(&model.User{})
 	if errMigrate != nil {
-		panic("Failed to migrate models to database")
+		panic("Failed to migrate models to config")
 	}
 	return db
 }

@@ -3,15 +3,15 @@ package main
 import (
 	"log"
 	"net/http"
+	"rest-api/config"
 	"rest-api/controller"
-	"rest-api/database"
 	"rest-api/repository"
 	"rest-api/routes"
 	"rest-api/service"
 )
 
 func main() {
-	db := database.InitDatabase()
+	db := config.InitDatabase()
 	userRepository := repository.New(db)
 	userService := service.New(userRepository)
 	userController := controller.New(userService)

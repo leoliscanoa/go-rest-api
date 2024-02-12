@@ -19,7 +19,7 @@ services:
     networks:
       - go-rest-api
   postgres:
-    container_name: database
+    container_name: config
     image: postgres:14.1-alpine
     restart: always
     environment:
