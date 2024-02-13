@@ -3,6 +3,7 @@ package controller
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"log"
 	"net/http"
 	"rest-api/helper"
 	"rest-api/model"
@@ -46,12 +47,14 @@ func (u *UserController) Save(writer http.ResponseWriter, request *http.Request)
 	var user model.User
 	err := json.NewDecoder(request.Body).Decode(&user)
 	if err != nil {
+		log.Printf("Error json %v", err.Error())
 		helper.JsonResponseError(writer, err.Error(), http.StatusBadRequest)
 		return
 	}
-	save, err := u.userService.Save(user)
-	if err != nil {
-		helper.JsonResponseError(writer, err.Error(), http.StatusBadRequest)
+	save, errSave := u.userService.Save(user)
+	if errSave != nil {
+		log.Printf("Error save %v", errSave.Error())
+		helper.JsonResponseError(writer, errSave.Error(), http.StatusBadRequest)
 		return
 	}
 	helper.JsonResponseSuccess(writer, save, http.StatusCreated)

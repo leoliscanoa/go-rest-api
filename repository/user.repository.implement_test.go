@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
-	"rest-api/config"
+	mock2 "rest-api/config/mock"
 	"rest-api/model"
 	"testing"
 )
@@ -15,46 +15,37 @@ var (
 	usersRows = sqlmock.NewRows([]string{"id", "username", "firstname", "lastname", "age"}).
 			AddRow(1, "username", "firstname", "lastname", 15).
 			AddRow(2, "username", "firstname", "lastname", 15)
-	user         = model.User{ID: 1, Username: "username", Firstname: "firstname", Lastname: "lastname", Age: 15}
-	GenericError = errors.New("generic error")
+	user           = model.User{ID: 1, Username: "username", Firstname: "firstname", Lastname: "lastname", Age: 15}
+	GenericError   = errors.New("generic error")
+	database, mock = mock2.MockDatabase()
+	implMock       = New(database)
 )
 
-func TestFindById(t *testing.T) {
-	database, mock := config.MockDatabase()
-	implMock := New(database)
+func TestUserRepositoryFindById(t *testing.T) {
 	mock.ExpectQuery(`SELECT`).WillReturnRows(userRow)
 	response, _ := implMock.FindById(1)
 	assert.Equal(t, uint64(1), response.ID)
 }
 
-func TestFindByIdError(t *testing.T) {
-	database, mock := config.MockDatabase()
-	implMock := New(database)
-
+func TestUserRepositoryFindByIdError(t *testing.T) {
 	mock.ExpectQuery(`SELECT`).WillReturnError(GenericError)
 	_, err := implMock.FindById(1)
 	assert.Equal(t, err, GenericError)
 }
 
-func TestFindAll(t *testing.T) {
-	database, mock := config.MockDatabase()
-	implMock := New(database)
+func TestUserRepositoryFindAll(t *testing.T) {
 	mock.ExpectQuery(`SELECT`).WillReturnRows(usersRows)
 	response, _ := implMock.FindAll()
 	assert.Equal(t, 2, len(response))
 }
 
-func TestFindAllError(t *testing.T) {
-	database, mock := config.MockDatabase()
-	implMock := New(database)
+func TestUserRepositoryFindAllError(t *testing.T) {
 	mock.ExpectQuery(`SELECT`).WillReturnError(GenericError)
 	_, err := implMock.FindAll()
 	assert.Equal(t, err, GenericError)
 }
 
-func TestSave(t *testing.T) {
-	database, mock := config.MockDatabase()
-	implMock := New(database)
+func TestUserRepositorySave(t *testing.T) {
 	mock.ExpectBegin()
 	mock.ExpectQuery(`INSERT`).
 		WithArgs("username", "firstname", "lastname", 15, 1).
@@ -64,9 +55,7 @@ func TestSave(t *testing.T) {
 	assert.Equal(t, user.ID, result.ID)
 }
 
-func TestSaveError(t *testing.T) {
-	database, mock := config.MockDatabase()
-	implMock := New(database)
+func TestUserRepositorySaveError(t *testing.T) {
 	mock.ExpectBegin()
 	mock.ExpectQuery(`INSERT`).
 		WithArgs("username", "firstname", "lastname", 15, 1).
