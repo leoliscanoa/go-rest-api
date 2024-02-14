@@ -24,3 +24,13 @@ docker-compose -p rest-api up --remove-orphans --force-recreate -d --build
 ```shell
 docker-compose -p rest-api down --remove-orphans --rmi local --volumes
 ```
+
+# Swagger
+
+- go get -u github.com/swaggo/swag/cmd/swag
+- $GOPATH/bin/swag init
+- go get -u github.com/swaggo/http-swagger
+
+# Swagger UI
+
+- [HTML](http://localhost:3000/swagger/index.html)

@@ -1,0 +1,146 @@
+definitions:
+  dto.ResponseDto-array_model_User:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.User'
+        type: array
+      error:
+        type: string
+      message:
+        type: string
+      time:
+        type: string
+    type: object
+  dto.ResponseDto-model_User:
+    properties:
+      data:
+        $ref: '#/definitions/model.User'
+      error:
+        type: string
+      message:
+        type: string
+      time:
+        type: string
+    type: object
+  dto.ResponseDto-string:
+    properties:
+      data:
+        type: string
+      error:
+        type: string
+      message:
+        type: string
+      time:
+        type: string
+    type: object
+  model.User:
+    properties:
+      age:
+        type: integer
+      firstname:
+        type: string
+      id:
+        type: integer
+      lastname:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:3000
+info:
+  contact:
+    email: andresliscanoa@gmail.com
+    name: Leo Liscano
+  description: A User service API in Go using Mux framework
+  title: User Service API
+  version: "1.0"
+paths:
+  /user:
+    get:
+      description: Find all registered users
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.ResponseDto-array_model_User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ResponseDto-string'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ResponseDto-string'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ResponseDto-string'
+      summary: find all users
+      tags:
+        - users
+    post:
+      description: Save user data in Db.
+      parameters:
+        - description: Create user
+          in: body
+          name: user
+          required: true
+          schema:
+            $ref: '#/definitions/model.User'
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.ResponseDto-model_User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ResponseDto-string'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ResponseDto-string'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ResponseDto-string'
+      summary: Create user
+      tags:
+        - users
+  /user/{id}:
+    get:
+      description: Find a user by it\'s unique identification.
+      parameters:
+        - description: user unique identification
+          in: path
+          name: id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.ResponseDto-model_User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ResponseDto-string'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ResponseDto-string'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ResponseDto-string'
+      summary: find a user
+      tags:
+        - users
+swagger: "2.0"

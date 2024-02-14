@@ -1,0 +1,223 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "A User service API in Go using Mux framework",
+    "title": "User Service API",
+    "contact": {
+      "name": "Leo Liscano",
+      "email": "andresliscanoa@gmail.com"
+    },
+    "version": "1.0"
+  },
+  "host": "localhost:3000",
+  "paths": {
+    "/user": {
+      "get": {
+        "description": "Find all registered users",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "find all users",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/dto.ResponseDto-array_model_User"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/dto.ResponseDto-string"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/dto.ResponseDto-string"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/dto.ResponseDto-string"
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Save user data in Db.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Create user",
+        "parameters": [
+          {
+            "description": "Create user",
+            "name": "user",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/model.User"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/dto.ResponseDto-model_User"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/dto.ResponseDto-string"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/dto.ResponseDto-string"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/dto.ResponseDto-string"
+            }
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "description": "Find a user by it\\'s unique identification.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "find a user",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "user unique identification",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/dto.ResponseDto-model_User"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/dto.ResponseDto-string"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/dto.ResponseDto-string"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/dto.ResponseDto-string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "dto.ResponseDto-array_model_User": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/model.User"
+          }
+        },
+        "error": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string"
+        }
+      }
+    },
+    "dto.ResponseDto-model_User": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/model.User"
+        },
+        "error": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string"
+        }
+      }
+    },
+    "dto.ResponseDto-string": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "string"
+        },
+        "error": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string"
+        }
+      }
+    },
+    "model.User": {
+      "type": "object",
+      "properties": {
+        "age": {
+          "type": "integer"
+        },
+        "firstname": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

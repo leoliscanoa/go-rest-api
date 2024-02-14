@@ -10,6 +10,15 @@ import (
 	"rest-api/service"
 )
 
+// @title 	User Service API
+// @version	1.0
+// @description A User service API in Go using Mux framework
+
+// @contact.name Leo Liscano
+// @contact.email andresliscanoa@gmail.com
+
+// @host 	localhost:3000
+// @schemes http
 func main() {
 	db := config.InitDatabase()
 	userRepository := repository.New(db)
